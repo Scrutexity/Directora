@@ -10,3 +10,22 @@ screenshots/
 *.log
 .env
 .env.*
+
+# Local env / secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/
+
+# Logs and dumps
+*.log
+*.sqlite
+*.db
+*.csv
+*.xlsx
