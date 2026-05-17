@@ -1,0 +1,17 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Aperture circle -->
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#00D9FF" stroke-width="3"/>
+  
+  <!-- Aperture blades -->
+  <path d="M 100 20 L 150 80 L 100 100 Z" fill="#00D9FF" opacity="0.8"/>
+  <path d="M 180 100 L 120 150 L 100 100 Z" fill="#00D9FF" opacity="0.7"/>
+  <path d="M 100 180 L 50 120 L 100 100 Z" fill="#00D9FF" opacity="0.8"/>
+  <path d="M 20 100 L 80 50 L 100 100 Z" fill="#00D9FF" opacity="0.7"/>
+  
+  <!-- Circuit lines -->
+  <line x1="30" y1="100" x2="70" y2="100" stroke="#FFD700" stroke-width="2"/>
+  <circle cx="35" cy="100" r="3" fill="#FFD700"/>
+  <circle cx="45" cy="100" r="3" fill="#FFD700"/>
+  <circle cx="55" cy="100" r="3" fill="#FFD700"/>
+  <circle cx="65" cy="100" r="3" fill="#FFD700"/>
+</svg>

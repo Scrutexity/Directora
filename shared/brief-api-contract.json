@@ -1,0 +1,600 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "generated_at": "2026-05-16T19:38:08Z",
+  "generated_by": "directora.api.contract.build_contract_snapshot",
+  "models": {
+    "AuditResponse": {
+      "$defs": {
+        "AuditEvent": {
+          "additionalProperties": true,
+          "properties": {
+            "approval_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Approval Status"
+            },
+            "brief_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Brief Id"
+            },
+            "clinic_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Clinic Id"
+            },
+            "event_id": {
+              "title": "Event Id",
+              "type": "string"
+            },
+            "kind": {
+              "title": "Kind",
+              "type": "string"
+            },
+            "provider_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Provider Id"
+            },
+            "risk_level": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Risk Level"
+            },
+            "ts": {
+              "title": "Ts",
+              "type": "number"
+            }
+          },
+          "required": [
+            "event_id",
+            "kind",
+            "ts"
+          ],
+          "title": "AuditEvent",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "brief_id": {
+          "title": "Brief Id",
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/AuditEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "brief_id",
+        "events"
+      ],
+      "title": "AuditResponse",
+      "type": "object"
+    },
+    "ErrorResponse": {
+      "properties": {
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "error": {
+          "title": "Error",
+          "type": "string"
+        },
+        "ledger_event_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ledger Event Id"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "title": "ErrorResponse",
+      "type": "object"
+    },
+    "PendingBriefResponse": {
+      "$defs": {
+        "LabSummaryFlags": {
+          "properties": {
+            "abnormal_count": {
+              "default": 0,
+              "title": "Abnormal Count",
+              "type": "integer"
+            },
+            "claim_risk_flagged": {
+              "default": 0,
+              "title": "Claim Risk Flagged",
+              "type": "integer"
+            },
+            "critical_count": {
+              "default": 0,
+              "title": "Critical Count",
+              "type": "integer"
+            }
+          },
+          "title": "LabSummaryFlags",
+          "type": "object"
+        },
+        "PendingBriefEngineOutputs": {
+          "properties": {
+            "claim_risk": {
+              "additionalProperties": true,
+              "title": "Claim Risk",
+              "type": "object"
+            },
+            "provider_brief_preview": {
+              "additionalProperties": true,
+              "title": "Provider Brief Preview",
+              "type": "object"
+            }
+          },
+          "required": [
+            "provider_brief_preview",
+            "claim_risk"
+          ],
+          "title": "PendingBriefEngineOutputs",
+          "type": "object"
+        },
+        "PendingBriefEntry": {
+          "properties": {
+            "brief_id": {
+              "title": "Brief Id",
+              "type": "string"
+            },
+            "clinic_id": {
+              "title": "Clinic Id",
+              "type": "string"
+            },
+            "created_at": {
+              "title": "Created At",
+              "type": "number"
+            },
+            "encounter_ref": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Encounter Ref"
+            },
+            "engine_outputs": {
+              "$ref": "#/$defs/PendingBriefEngineOutputs"
+            },
+            "lab_summary": {
+              "$ref": "#/$defs/LabSummaryFlags"
+            },
+            "links": {
+              "$ref": "#/$defs/PendingBriefLinks"
+            },
+            "market": {
+              "title": "Market",
+              "type": "string"
+            },
+            "patient_ref": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Patient Ref"
+            },
+            "provider_id": {
+              "title": "Provider Id",
+              "type": "string"
+            },
+            "results": {
+              "items": {
+                "$ref": "#/$defs/ResultHighlight"
+              },
+              "title": "Results",
+              "type": "array"
+            },
+            "status": {
+              "enum": [
+                "pending_review",
+                "drafted",
+                "reviewed",
+                "signed"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "treatment": {
+              "title": "Treatment",
+              "type": "string"
+            },
+            "updated_at": {
+              "title": "Updated At",
+              "type": "number"
+            }
+          },
+          "required": [
+            "brief_id",
+            "provider_id",
+            "clinic_id",
+            "status",
+            "created_at",
+            "updated_at",
+            "treatment",
+            "market",
+            "lab_summary",
+            "engine_outputs",
+            "links"
+          ],
+          "title": "PendingBriefEntry",
+          "type": "object"
+        },
+        "PendingBriefLinks": {
+          "properties": {
+            "audit": {
+              "title": "Audit",
+              "type": "string"
+            },
+            "detail": {
+              "title": "Detail",
+              "type": "string"
+            },
+            "provider": {
+              "title": "Provider",
+              "type": "string"
+            }
+          },
+          "required": [
+            "audit",
+            "detail",
+            "provider"
+          ],
+          "title": "PendingBriefLinks",
+          "type": "object"
+        },
+        "ResultHighlight": {
+          "properties": {
+            "flag": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Flag"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            },
+            "reference_range": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Reference Range"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Value"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "ResultHighlight",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/PendingBriefEntry"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Cursor"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "PendingBriefResponse",
+      "type": "object"
+    },
+    "ProviderBriefResponse": {
+      "additionalProperties": true,
+      "properties": {
+        "asset_type": {
+          "const": "provider_brief_snippet",
+          "title": "Asset Type",
+          "type": "string"
+        },
+        "brief_content_hash": {
+          "title": "Brief Content Hash",
+          "type": "string"
+        },
+        "canonical_json": {
+          "title": "Canonical Json",
+          "type": "string"
+        },
+        "snippet": {
+          "additionalProperties": true,
+          "title": "Snippet",
+          "type": "object"
+        }
+      },
+      "required": [
+        "asset_type",
+        "brief_content_hash",
+        "canonical_json",
+        "snippet"
+      ],
+      "title": "ProviderBriefSnippetResponse",
+      "type": "object"
+    },
+    "SignBriefRequest": {
+      "$defs": {
+        "ClientBlock": {
+          "properties": {
+            "app": {
+              "title": "App",
+              "type": "string"
+            },
+            "session_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Session Id"
+            },
+            "version": {
+              "title": "Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "app",
+            "version"
+          ],
+          "title": "ClientBlock",
+          "type": "object"
+        },
+        "SignatureBlock": {
+          "properties": {
+            "method": {
+              "default": "typed",
+              "enum": [
+                "typed",
+                "drawn",
+                "biometric"
+              ],
+              "title": "Method",
+              "type": "string"
+            },
+            "signed_at": {
+              "title": "Signed At",
+              "type": "string"
+            },
+            "value": {
+              "maxLength": 512,
+              "minLength": 1,
+              "title": "Value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "signed_at"
+          ],
+          "title": "SignatureBlock",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "authority_brief_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Authority Brief Version"
+        },
+        "brief_id": {
+          "title": "Brief Id",
+          "type": "string"
+        },
+        "client": {
+          "$ref": "#/$defs/ClientBlock"
+        },
+        "engine_run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Run Id"
+        },
+        "provider_brief_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Brief Version"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "signature": {
+          "$ref": "#/$defs/SignatureBlock"
+        }
+      },
+      "required": [
+        "brief_id",
+        "provider_id",
+        "signature",
+        "client"
+      ],
+      "title": "SignBriefRequest",
+      "type": "object"
+    },
+    "SignResponse": {
+      "properties": {
+        "binding_hash": {
+          "title": "Binding Hash",
+          "type": "string"
+        },
+        "brief_content_hash": {
+          "title": "Brief Content Hash",
+          "type": "string"
+        },
+        "ledger_event_id": {
+          "title": "Ledger Event Id",
+          "type": "string"
+        },
+        "next_actions": {
+          "additionalProperties": true,
+          "title": "Next Actions",
+          "type": "object"
+        },
+        "signed_at": {
+          "title": "Signed At",
+          "type": "string"
+        },
+        "status": {
+          "const": "signed",
+          "default": "signed",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ledger_event_id",
+        "signed_at",
+        "brief_content_hash",
+        "binding_hash",
+        "next_actions"
+      ],
+      "title": "SignBriefResponse",
+      "type": "object"
+    }
+  },
+  "title": "Scrutexity Brief API contract",
+  "version": "3.7.0"
+}

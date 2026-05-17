@@ -1,0 +1,21 @@
+# Scrutexity Authority Engine v3.7 — runtime dependencies for the add-on.
+# Parent project already pins LangGraph, langchain, etc.
+#
+# v3.2 introduced pydantic v2 for receipt validation.
+# v3.4 introduced FastAPI + httpx for the Brief API + sign-off path.
+# v3.5: jsonschema for contract validation; stdlib sqlite3 for the
+#       SQLite brief store backend.
+# v3.6: PyJWT for production JWT auth; cryptography for RS256 / JWKS
+#       verification. SQLite idempotency store via stdlib sqlite3.
+# v3.7: prometheus_client for /metrics; locust as a dev-only load-test
+#       dependency.
+pydantic>=2.0
+fastapi>=0.110
+jsonschema>=4.20
+PyJWT>=2.8.0
+cryptography>=41.0.0
+prometheus_client>=0.20.0
+# Test-time dependency (FastAPI TestClient transport).
+httpx>=0.27
+# Dev-only — drives tests/load/sign_off_load_test.py. Skip in prod images.
+# locust>=2.20.0
