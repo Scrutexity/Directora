@@ -1,0 +1,13 @@
+flowchart LR
+  UI["LabBrief UI"] --> SDK["labbrief_kit TypeScript SDK"]
+  SDK --> API["Directora FastAPI"]
+  API --> SIGN["Signature validation"]
+  SIGN --> IDEMP["Idempotency check"]
+  IDEMP --> LEDGER["Atomic append-only ledger"]
+  LEDGER --> AUDIT["Audit read model"]
+
+  CONTRACT["Golden contract JSON Schema"] --> SDK
+  CONTRACT --> API
+  TESTS["Governance proof tests"] --> CONTRACT
+  TESTS --> API
+  TESTS --> SDK
