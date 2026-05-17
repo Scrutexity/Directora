@@ -11,38 +11,8 @@ permissions:
   contents: read
 
 jobs:
-  proof:
-    name: ultimate-governance-check
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - name: Checkout
-        # v4
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-
-      - name: Set up Python
-        # v5
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: "3.11"
-
-      - name: Verify governance structure
-        run: |
-          echo "✓ Governance proof structure verified"
-          test -f ./tests/governance/directora-governance-check.sh && echo "✓ Directora check script exists"
-          test -f ./shared/brief-api-contract.json && echo "✓ API contract exists" || echo "ℹ Contract will be generated on run"
-          echo "✓ Ready for live governance testing"
-
-      - name: Upload contract snapshot (artifact)
-        if: always()
-        # v4
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: brief-api-contract
-          path: shared/brief-api-contract.json
-          retention-days: 30
-            lock-file-check:
+  lock-file-check:
+    name: verify-lock-file
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -61,3 +31,31 @@ jobs:
             exit 1
           fi
           echo "✅ requirements-lock.txt matches requirements.txt"
+
+  proof:
+    name: ultimate-governance-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: lock-file-check
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify governance structure
+        run: |
+          echo "✓ Governance proof structure verified"
+          test -f ./tests/governance/directora-governance-check.sh && echo "✓ Directora check script exists"
+          test -f ./shared/brief-api-contract.json && echo "✓ API contract exists" || echo "ℹ Contract will be generated on run"
+          echo "✓ Ready for live governance testing"
+
+      - name: Upload contract snapshot (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brief-api-contract
+          path: shared/brief-api-contract.json
+          retention-days: 30
