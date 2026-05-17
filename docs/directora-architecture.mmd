@@ -1,0 +1,11 @@
+flowchart TD
+    UI[LabBrief UI] -->|POST /api/brief/sign| API[Directora FastAPI]
+    API --> SIG[Signature Validation]
+    SIG --> IDEMP[Idempotency Engine]
+    IDEMP --> LEDGER[Atomic Ledger Append]
+    LEDGER --> HASH[Binding Hash]
+    HASH --> OK[200 OK + ledger_event_id]
+
+    CONTRACT[Golden Contract JSON] -.-> API
+    CONTRACT -.-> KIT[LabBrief Kit]
+    KIT -->|Retry + Drift Detection| API
