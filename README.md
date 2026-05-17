@@ -4,6 +4,10 @@
      ======================= -->
 
 <div align="center">
+  <img alt="Directora banner" src="assets/directora-banner.png" width="1000" />
+</div>
+
+<div align="center">
 
 [![Governance Proof](https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml/badge.svg)](https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml)
 [![GitHub stars](https://img.shields.io/github/stars/Scrutexity/Directora?style=for-the-badge&logo=github&color=0A2540&labelColor=080808)](https://github.com/Scrutexity/Directora/stargazers)
@@ -22,6 +26,10 @@
 
 [Architecture](#01--architecture) · [Repository Matrix](#02--repository-matrix) · [Deployment](#03--deployment--protocol) · [Contract](#04--contract-specification) · [Governance Proof](#05--governance-proof) · [Security](#06--compliance--security) · [Threat Model](THREAT_MODEL.md)
 
+</div>
+
+<div align="center">
+  <img alt="Directora governance flow demo" src="assets/directora-demo.gif" width="880" />
 </div>
 
 ---
@@ -61,6 +69,7 @@ Directora eliminates that failure mode by enforcing a provably correct, immutabl
 | `tests/adversarial/` | Python | Adversarial tests breaking replay, drift, signatures, backpressure |
 | `scripts/` | Shell | `demo_trust.sh` — 5 guarantees in under 5 minutes |
 | `docs/` | Markdown / HTML | Architecture notes, release page, ship document |
+| `components/` | React / Framer Motion | Optional animated governance-flow component |
 
 ---
 
@@ -222,6 +231,22 @@ See `THREAT_MODEL.md` for attacker models, mitigations, and out-of-scope risks.
 | JWT revocation | `jti` blacklist; `POST /admin/jwt/revoke` for incident response |
 
 > Directora does not claim HIPAA, SOC 2, FDA, legal, or regulatory certification. It provides governance mechanisms, auditability patterns, and safer workflow infrastructure.
+
+---
+
+## React Animation Component (optional)
+
+The animated governance-flow component lives at:
+
+```text
+components/ScrutexityFlow.tsx
+```
+
+Install before using it:
+
+```bash
+npm install framer-motion
+```
 
 ---
 
