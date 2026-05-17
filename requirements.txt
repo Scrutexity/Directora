@@ -9,6 +9,9 @@
 #       verification. SQLite idempotency store via stdlib sqlite3.
 # v3.7: prometheus_client for /metrics; locust as a dev-only load-test
 #       dependency.
+# v3.7.2: uvicorn + gunicorn added — server runtime was missing
+uvicorn>=0.27.0
+gunicorn>=21.2.0
 pydantic>=2.0
 fastapi>=0.110
 jsonschema>=4.20
