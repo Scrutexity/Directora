@@ -1,31 +1,31 @@
-<div align="center">
-  <img src="./assets/directora-banner.png" alt="Directora by Scrutexity" width="100%"/>
-  <br/><br/>
+<p align="center">
+  <img alt="Directora by Scrutexity" src="assets/directora-logo.svg" width="420" />
+</p>
 
+<p align="center">
   <a href="https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml">
-<<<<<<< HEAD
     <img alt="Governance Proof" src="https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml/badge.svg"/>
-=======
-    <img alt="governance-proof" src="https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml/badge.svg"/>
->>>>>>> 85e7571 (docs: Clean README with proof-verified branding, no double-badging)
   </a>
   <img alt="Status" src="https://img.shields.io/badge/status-governance%20proof-green?style=flat-square"/>
-  <img alt="Version" src="https://img.shields.io/badge/version-3.7.1-blue?style=flat-square"/>
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green?style=flat-square"/>
+</p>
 
-  <br/><br/>
-  <b>Directora is internal Scrutexity infrastructure—the machine behind our outcomes.</b><br/>
-<<<<<<< HEAD
-  Engine published as proof of governance. <code>labbrief_kit/</code> is the integration surface. Full LabBrief UI remains private.
-  <br/><br/>
-  <i>Not a clinical, legal, or regulatory assessment. PHI-minimizing IDs only (<code>patient_ref</code>, <code>encounter_ref</code>).</i>
-=======
-  Engine published as proof of governance. LabBrief kit available for integration. Full LabBrief app remains private.
-  <br/><br/>
-  <i>Not a clinical, legal, or regulatory assessment. PHI-minimizing IDs only.</i>
->>>>>>> 85e7571 (docs: Clean README with proof-verified branding, no double-badging)
-</div>
+# Directora
 
+Directora is internal Scrutexity infrastructure — the machine behind our outcomes.
+
+Engine published as **proof of governance**. `labbrief_kit/` is the integration surface. The full LabBrief UI remains private.
+
+**Not a clinical, legal, or regulatory assessment.** PHI-minimizing IDs only (`patient_ref`, `encounter_ref`).
+
+---
+
+## Verify in 60 seconds (the gate)
+
+Run from repo root:
+
+```bash
+./tests/governance/ultimate-governance-check.sh
 ---
 
 > 🔒 **Governed. Proof-verified. MIT-Licensed.**  
