@@ -6,7 +6,11 @@
 <p align="center">
   <img alt="Directora banner" src="assets/directora-banner.png" width="980" />
 </p>
-
+<p align="center">
+  <img src="https://img.shields.io/github/stars/Scrutexity/Directora?style=for-the-badge" alt="Stars"/>
+  <img src="https://img.shields.io/github/release/Scrutexity/Directora?style=for-the-badge" alt="Release"/>
+  <img src="https://img.shields.io/badge/HealthTech-Enterprise-0A2540?style=for-the-badge" alt="HealthTech Enterprise"/>
+</p>
 <p align="center">
   <a href="https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml">
     <img alt="Governance Proof" src="https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml/badge.svg"/>
