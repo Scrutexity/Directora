@@ -42,3 +42,22 @@ jobs:
           name: brief-api-contract
           path: shared/brief-api-contract.json
           retention-days: 30
+            lock-file-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pip-tools
+      - name: Verify lock file matches requirements
+        run: |
+          pip-compile requirements.txt -o /tmp/requirements-lock-check.txt
+          tail -n +9 requirements-lock.txt > /tmp/current-pins.txt
+          tail -n +9 /tmp/requirements-lock-check.txt > /tmp/new-pins.txt
+          if ! diff -q /tmp/current-pins.txt /tmp/new-pins.txt; then
+            echo "❌ requirements-lock.txt is out of date."
+            echo "Run: pip-compile requirements.txt -o requirements-lock.txt"
+            exit 1
+          fi
+          echo "✅ requirements-lock.txt matches requirements.txt"
