@@ -1,0 +1,12 @@
+
+# Sensitive / customer data
+data/
+exports/
+receipts/
+diagnostics/
+screenshots/
+*.csv
+*.xlsx
+*.log
+.env
+.env.*
