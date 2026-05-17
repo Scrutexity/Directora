@@ -56,4 +56,8 @@ def get_revocation_store() -> JWTRevocationStore:
     global _revocation_store
     if _revocation_store is None:
         _revocation_store = JWTRevocationStore()
+<<<<<<< Updated upstream
     return _revocation_store
+=======
+    return _revocation_store
+>>>>>>> Stashed changes
