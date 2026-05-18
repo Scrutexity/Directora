@@ -1,0 +1,49 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "${BIRKIN_PORT:-3000}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/usr/share/nginx/html/static:ro
+    depends_on:
+      - openwebui
+      - birkin-api
+    restart: unless-stopped
+
+  birkin-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    environment:
+      - BIRKIN_TOKEN=${BIRKIN_TOKEN}
+      - BIRKIN_BUDGET_USD=${BIRKIN_BUDGET_USD:-50}
+      - PUSHER_INSTANCE_ID=${PUSHER_INSTANCE_ID:-}
+      - PUSHER_SECRET_KEY=${PUSHER_SECRET_KEY:-}
+      - ONESIGNAL_APP_ID=${ONESIGNAL_APP_ID:-}
+      - ONESIGNAL_API_KEY=${ONESIGNAL_API_KEY:-}
+      - ENV=production
+      - BRIEF_STORE_BACKEND=sqlite
+      - IDEMPOTENCY_STORE_BACKEND=sqlite
+    volumes:
+      - birkin_data:/app/data
+    restart: unless-stopped
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    expose:
+      - "8080"
+    environment:
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-changeme}
+      - WEBUI_NAME=Birkin
+      - DEFAULT_LOCALE=en-US
+      - ENABLE_SIGNUP=${ENABLE_SIGNUP:-false}
+    volumes:
+      - openwebui_data:/app/backend/data
+    restart: unless-stopped
+
+volumes:
+  birkin_data:
+  openwebui_data:

@@ -1,0 +1,46 @@
+{
+  "name": "Birkin",
+  "short_name": "Birkin",
+  "description": "Personal iPhone controller for Hermes agents",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0A0F1A",
+  "background_color": "#0A0F1A",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Run sourcing-intel",
+      "short_name": "Sourcing",
+      "description": "Trigger sourcing-intel agent",
+      "url": "/api/skills/sourcing-intel/trigger",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Daily Brief",
+      "short_name": "Brief",
+      "description": "Trigger daily-brief agent",
+      "url": "/api/skills/daily-brief/trigger",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
