@@ -25,7 +25,12 @@ from directora.api.health import router as health_router, startup_probe
 from directora.api.observability import ObservabilityMiddleware
 from directora.api.routes.audit import router as audit_router
 from directora.api.routes.brief import router as brief_router
+from directora.api.routes.costs import router as costs_router
 from directora.api.routes.metrics import router as metrics_router
+from directora.api.routes.notifications import router as notifications_router
+from directora.api.routes.schedules import router as schedules_router
+from directora.api.routes.skills import router as skills_router
+from directora.api.routes.widget import router as widget_router
 
 
 def _cors_origins() -> list[str]:
@@ -63,6 +68,12 @@ def create_app() -> FastAPI:
     app.include_router(metrics_router)
     app.include_router(brief_router)
     app.include_router(audit_router)
+    # Birkin iPhone controller features
+    app.include_router(skills_router)
+    app.include_router(widget_router)
+    app.include_router(schedules_router)
+    app.include_router(costs_router)
+    app.include_router(notifications_router)
 
     @app.on_event("startup")
     def _on_startup() -> None:

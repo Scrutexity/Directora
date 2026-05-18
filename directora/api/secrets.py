@@ -49,4 +49,9 @@ def get_clinic_signing_secret(clinic_id: str) -> str:
     )
 
 
-__all__ = ["get_clinic_signing_secret", "MissingClinicSigningSecret"]
+def get_secret(name: str) -> str | None:
+    """Return the value of an env var secret, or None if unset."""
+    return os.getenv(name)
+
+
+__all__ = ["get_clinic_signing_secret", "get_secret", "MissingClinicSigningSecret"]

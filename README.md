@@ -1,231 +1,165 @@
-<!-- =======================
-     DIRECTORA • README
-     Production Governance Infrastructure
-     ======================= -->
+# Birkin
 
-<div align="center">
-  <img alt="Directora banner" src="assets/directora-banner.png" width="1000" />
-</div>
+**My personal iPhone controller for Hermes Agents — open-source alternative to Claude Dispatch.**
 
-<div align="center">
+Control my Hermes agents from my iPhone with voice input, get Telegram alerts when governance fails, and cryptographically verify agent integrity with hash-chained audit logs. **Self-hosted, free, my data stays local.**
 
-[![Governance Proof](https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml/badge.svg)](https://github.com/Scrutexity/Directora/actions/workflows/governance-proof.yml)
-[![GitHub stars](https://img.shields.io/github/stars/Scrutexity/Directora?style=for-the-badge&logo=github&color=0A2540&labelColor=080808)](https://github.com/Scrutexity/Directora/stargazers)
-[![Latest release](https://img.shields.io/github/v/release/Scrutexity/Directora?style=for-the-badge&logo=github&color=00C853&labelColor=080808)](https://github.com/Scrutexity/Directora/releases)
-[![License](https://img.shields.io/github/license/Scrutexity/Directora?style=for-the-badge&logo=opensourceinitiative&color=0A2540&labelColor=080808)](https://github.com/Scrutexity/Directora/blob/main/LICENSE)
+PRIORITY FEATURES (for personal use, not public):
 
-![Status: Governance Proof](https://img.shields.io/badge/status-governance%20proof-00C853?style=for-the-badge&labelColor=080808)
-![Stack: FastAPI / TypeScript](https://img.shields.io/badge/stack-FastAPI%20%2F%20TypeScript-0A2540?style=for-the-badge&labelColor=080808)
+1. (30min) Siri Shortcuts integration — POST /api/skills/{name}/trigger endpoint so "Hey Siri, run sourcing-intel" triggers agents without unlocking phone
 
-# DIRECTORA
+2. (3hr) iOS Widget showing real-time agent status (health, uptime, last action, pending alerts)
 
-**Governance Infrastructure // Scrutexity**
+3. (1hr) Shortcuts automation — scheduled triggers (daily-brief at 7 AM, competitor-monitor on geofence, etc.)
 
-*Immutable ledger. Atomic sign-off. Zero-drift contracts.*
+4. (3hr) Cost tracker per skill — track spending per agent/skill, monthly budget alerts
 
-[Architecture](#01--architecture) · [Repository Matrix](#02--repository-matrix) · [Deployment](#03--deployment--protocol) · [Contract](#04--contract-specification) · [Governance Proof](#05--governance-proof) · [Security](#06--compliance--security)
+5. (3hr) Native push notifications (via Pusher or OneSignal) instead of Telegram — better iOS UX
 
-</div>
+6. (2hr) Apple Watch complication showing agent status
 
-<div align="center">
-  <img alt="Directora governance flow demo" src="assets/directora-demo.gif" width="880" />
-</div>
+7. (2hr) Focus mode integration — agents behave differently based on Work/Personal/Sleep/Driving
+
+8. (4hr) Offline mode — queue agent actions when offline, auto-sync when online
+
+9. (2hr) 3D Touch quick actions — long-press app icon to run skills directly
+
+10. (2hr) Handoff to Mac — seamless handoff from iPhone to Mac for audit logs
 
 ---
 
-## 01 // Architecture
+## Architecture
 
-Modern clinical operations fail from **system drift**.
+Birkin is a FastAPI server that runs locally (or on a personal VPS) and exposes endpoints consumed by Siri Shortcuts, iOS Widgets, and a companion SwiftUI app. The underlying Directora governance layer provides immutable, hash-chained audit logs for every agent action.
 
-Directora eliminates that failure mode by enforcing a provably correct, immutable, and retry-safe event ledger. If a transaction passes Directora governance, the client and server remain synchronized by contract.
-
-> **Directora is an immutable governed commit system.**  
-> The ledger append is the commit point. The contract is the boundary. Drift fails closed.
+```
+iPhone (Siri / Widgets / SwiftUI) → Birkin FastAPI → Hermes Agents → Directora Ledger
+```
 
 ### Core Guarantees
 
-| Guarantee | Enforcement | Outcome |
-|---|---|---|
-| **Atomicity** | Ledger append is the single isolated commit point | No partial states |
-| **Idempotency** | Byte-identical replay detection | Safe retries without duplication |
-| **Contract Integrity** | Golden contract alignment | Zero silent drift |
-| **Auditability** | Immutable event history | Provable operational trail |
-| **Governed Failure** | Fail-closed on signature or drift anomalies | Defense-in-depth |
-
-> **Note:** Directora uses PHI-minimizing references such as `patient_ref` and `encounter_ref`. Raw clinical payloads are prohibited from the ledger.
+| Guarantee | Enforcement |
+|---|---|
+| **Auditability** | Hash-chained ledger — every agent action is verifiable |
+| **Atomicity** | Ledger append is the single commit point |
+| **Idempotency** | Safe retries without duplicate agent runs |
+| **Governed failure** | Fails closed on integrity violations — Telegram alert fires |
 
 ---
 
-## 02 // Repository Matrix
+## Repository Layout
 
 | Path | Stack | Function |
 |---|---|---|
-| `directora/` | FastAPI / Python | Governed server for append-only events, signing, and idempotency |
-| `labbrief_kit/` | TypeScript | Public integration surface and retry-safe client logic |
-| `shared/` | JSON Schema | Canonical contract source for client/server alignment |
-| `tests/governance/` | Shell / Python CI gates | Automated drift gates and ledger discipline proofs |
-| `docs/` | Markdown / Mermaid | Architecture notes and diagram source |
-| `components/` | React / Framer Motion | Optional animated governance-flow component |
+| `directora/api/routes/skills.py` | FastAPI | Siri Shortcuts trigger endpoint |
+| `directora/api/routes/widget.py` | FastAPI | iOS Widget status feed |
+| `directora/api/routes/schedules.py` | FastAPI | Shortcuts automation / cron triggers |
+| `directora/api/routes/costs.py` | FastAPI | Per-skill cost tracking |
+| `directora/api/routes/notifications.py` | FastAPI | Push notification dispatch |
+| `directora/` | FastAPI / Python | Governed server, ledger, idempotency |
+| `shared/` | JSON Schema | Contract source |
+| `tests/` | Python | Governance gates |
 
 ---
 
-## 03 // Deployment & Protocol
-
-### Initialization
+## Quickstart
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-lock.txt
 
+# copy and fill in your keys
+cp .env.example .env
+
 uvicorn directora.api.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### Dependency lock (required for deploys)
-
-Directora deploys are pinned and reproducible. Install from `requirements-lock.txt` (generated from `requirements.txt`).
-
-To regenerate the lock:
-
-```bash
-pip install pip-tools
-pip-compile requirements.txt -o requirements-lock.txt
-```
-
-
-
-### Health Check
+### Health check
 
 ```bash
 curl http://localhost:8000/health
 ```
 
-### Governance Verification
+### Trigger a skill (Siri Shortcuts compatible)
 
-Directora is designed to be provably governed. The CI gate enforces canonical contract alignment, idempotent replays, and silent-drift prevention before merge.
+```bash
+curl -X POST http://localhost:8000/api/skills/sourcing-intel/trigger \
+  -H "Authorization: Bearer $BIRKIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"source": "siri", "params": {}}'
+```
+
+---
+
+## Feature 1 — Siri Shortcuts Integration
+
+`POST /api/skills/{name}/trigger` accepts a bearer token and optional params. Configure a Shortcut that POSTs to this endpoint — "Hey Siri, run sourcing-intel" triggers the agent without unlocking the phone.
+
+```
+POST /api/skills/{name}/trigger
+Authorization: Bearer <BIRKIN_TOKEN>
+→ { "run_id": "...", "status": "queued", "skill": "sourcing-intel" }
+```
+
+## Feature 2 — iOS Widget
+
+`GET /api/widget/status` returns agent health, uptime, last action, and pending alert count — everything the iOS widget needs in a single call.
+
+```
+GET /api/widget/status
+→ { "agents": [...], "pending_alerts": 2, "updated_at": "..." }
+```
+
+## Feature 3 — Shortcuts Automation
+
+`POST /api/schedules` creates a named trigger (cron or geofence label). The server fires the linked skill at the scheduled time.
+
+```
+POST /api/schedules
+→ { "id": "daily-brief-0700", "skill": "daily-brief", "cron": "0 7 * * *" }
+```
+
+## Feature 4 — Cost Tracker
+
+`GET /api/costs` returns per-skill spend for the current month, total, and alerts when budget thresholds are hit.
+
+```
+GET /api/costs?period=month
+→ { "skills": { "sourcing-intel": { "usd": 1.42, "runs": 18 } }, "total_usd": 4.87 }
+```
+
+## Feature 5 — Push Notifications
+
+`POST /api/notifications/register` registers a device token. The server sends native push via Pusher Beams or OneSignal when governance fails or a budget alert fires.
+
+```
+POST /api/notifications/register
+→ { "device_id": "...", "registered": true }
+```
+
+---
+
+## Governance & Audit
+
+Every agent trigger writes a hash-chained ledger event. Verify the audit trail:
 
 ```bash
 ./tests/governance/ultimate-governance-check.sh
 ```
 
-Expected return:
-
-```text
-✅ GOVERNANCE ARCHITECTURE INTACT
-   Directora and LabBrief cannot drift.
-```
-
 ---
 
-## 04 // Contract Specification
+## Security
 
-### Signing Protocol
-
-```http
-POST /api/brief/sign
-```
-
-| Header / Field | Requirement | Vector |
-|---|---:|---|
-| `Idempotency-Key` | Required | Safe identical replays without double-commits |
-| `Signature` | Required | Authenticity verification and tamper prevention |
-| `X-Contract-Version` | Required | Drift detection against the golden JSON schema |
-| `X-Idempotency-Replayed` | Server return | Indicates replayed request returned identical response |
-| `ledger_event_id` | Server return | Immutable event reference after commit |
-
-### Commit Boundary
-
-```mermaid
-flowchart TD
-    UI[LabBrief UI] -->|POST /api/brief/sign| API[Directora FastAPI]
-    API --> SIG[Signature Validation]
-    SIG --> IDEMP[Idempotency Engine]
-    IDEMP --> LEDGER[Atomic Ledger Append]
-    LEDGER --> HASH[Binding Hash]
-    HASH --> OK[200 OK + ledger_event_id]
-
-    CONTRACT[Golden Contract JSON] -.-> API
-    CONTRACT -.-> KIT[LabBrief Kit]
-    KIT -->|Retry + Drift Detection| API
-```
-
----
-
-## 05 // Governance Proof
-
-Directora’s governance model is not decorative. It is enforced.
-
-The proof gate checks:
-
-- Golden contract remains canonical.
-- Client SDK and server behavior stay aligned.
-- Replayed requests return byte-identical responses.
-- Ledger append remains the commit boundary.
-- Drift fails CI before merge.
-- Unsafe failure paths block instead of silently degrading.
-
-```bash
-./tests/governance/ultimate-governance-check.sh
-```
-
----
-
-## 06 // Compliance & Security
-
-Directora enforces strict access and data parameters:
-
-| Control | Standard |
+| Control | How |
 |---|---|
-| **Zero PHI Bloat** | Only minimized references are logged |
-| **Zero Secret Logging** | Signatures, tokens, and sensitive payloads are stripped from logs |
-| **Least Privilege** | Runtime credentials operate with minimum viable access |
-| **Fail-Closed Governance** | Signature or contract deviations block the operation |
-| **Private Disclosure** | Security issues are handled privately before public discussion |
+| **Auth** | Bearer token (`BIRKIN_TOKEN` env var) on all skill/schedule endpoints |
+| **Local data** | Ledger is SQLite on local disk — nothing leaves your machine |
+| **Fail-closed** | Governance violations block the operation and fire a Telegram alert |
 
-See [`SECURITY.md`](SECURITY.md) for disclosure protocols and [`CONTRIBUTING.md`](CONTRIBUTING.md) for pull-request governance.
-
-> Directora does not claim HIPAA, SOC 2, FDA, legal, or regulatory certification. It provides governance mechanisms, auditability patterns, and safer workflow infrastructure.
+See [`SECURITY.md`](SECURITY.md) for disclosure protocols.
 
 ---
 
-## Enterprise Signals
-
-- **Used internally at Scrutexity** as governance infrastructure for clinical-adjacent workflow proof.
-- **Zero-drift contracts** keep client and server behavior aligned.
-- **Immutable ledger references** create operational traceability without storing raw clinical content.
-- **Retry-safe design** prevents accidental duplicate sign-off commits.
-- **Fail-closed posture** treats unsafe drift as a blocked operation, not a warning.
-
----
-
-## React Animation Component
-
-The optional source component for the animated governance flow lives at:
-
-```text
-components/ScrutexityFlow.tsx
-```
-
-Install the dependency before using it:
-
-```bash
-npm install framer-motion
-```
-
-The component should remain `.tsx` because it contains React/SVG JSX.
-
----
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Scrutexity/Directora&type=Date)](https://star-history.com/#Scrutexity/Directora&Date)
-
----
-
-<div align="center">
-
-**SCRUTEXITY // 2026**
-
-*Built with precision. Governed by proof.*
-
-</div>
+*Self-hosted. Personal use. My data stays local.*
